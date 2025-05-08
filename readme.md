@@ -1,0 +1,2 @@
+cokolwiek
+następna linia
