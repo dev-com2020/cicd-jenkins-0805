@@ -2,8 +2,9 @@ import unittest
 from calculator import add
 
 class TestCalculator(unittest.TestCase):
+
     def test_add_positive_numbers(self):
-        result = add(2, 3)
+        result = add(2, 30)
         self.assertEqual(result, 5)
         
     def test_add_negative_numbers(self):
