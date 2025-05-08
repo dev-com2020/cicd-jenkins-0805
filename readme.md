@@ -1,1 +1,2 @@
 cokolwiek
+następna linia
