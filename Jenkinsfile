@@ -1,31 +1,38 @@
 pipeline {
     agent any
+
+    environment {
+        VENV = "venv"
+    }
+
     stages {
         stage('Install Python') {
             steps {
                 sh '''
-                    python3 -m venv venv
-                    . venv/bin/activate
+                    python3 -m venv $VENV
+                    . $VENV/bin/activate
                     pip install -r requirements.txt
                 '''
             }
         }
-        def testResults
+
         stage('Test') {
             steps {
             echo 'Running Tests'
-            testResults = sh(returnStatus: true, script: 'mvn test')
+            env.testResults = sh(returnStatus: true, script: 'mvn test')
         }
         }
         stage('Deploy') {
             steps {
             echo 'Deploying app...'
-            if (testResults == 0) {
+            script {
+            if (env.testResults == 0) {
                 echo 'Test passed'
             } else {
                 echo 'Test failed'
             }
         }
+            }
         }
     }
 }
