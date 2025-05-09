@@ -18,29 +18,28 @@ pipeline {
 
         stage('Test') {
             steps {
-            echo 'Running Tests'
-            script {
-            env.testResults = sh(returnStatus: true, script: 'pytest')
-        }
+                script {
+                    echo 'Running Pytest...'
+                    // Zmienna Groovy, NIE env!
+                    testResults = sh(returnStatus: true, script: '''
+                        . venv/bin/activate
+                        pytest
+                    ''')
+                }
             }
-            steps {
-            echo 'Running Pytest'
-            sh '''
-                    pytest
-                '''
-            
         }
-            }
+
         stage('Deploy') {
             steps {
-            echo 'Deploying app...'
-            script {
-            if (env.testResults == 0) {
-                echo 'Test passed'
-            } else {
-                echo 'Test failed'
-            }
-        }
+                script {
+                    echo 'Deploying app...'
+                    if (testResults == 0) {
+                        echo '✅ Test passed – deployment continues.'
+                    } else {
+                        echo '❌ Test failed – skipping deployment.'
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
             }
         }
     }
