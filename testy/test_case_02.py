@@ -14,13 +14,15 @@ def setup_db():
     # Czyści po testach
     Base.metadata.drop_all(bind=engine)
 
-def test_create_and_read_user():
+def test_create_user():
     response = client.post("/users", params={"name": "Tomek"})
     assert response.status_code == 200
     data = response.json()
     assert data["id"] == 1
     assert data["name"] == "Tomek"
 
+
+def test_read_user():
     response = client.get("/users/1")
     assert response.status_code == 200
     user = response.json()
