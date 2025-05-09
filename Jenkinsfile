@@ -20,7 +20,7 @@ pipeline {
             steps {
             echo 'Running Tests'
             script {
-            env.testResults = sh(returnStatus: true, script: 'mvn test')
+            env.testResults = sh(returnStatus: true, script: 'pytest')
         }
             }
         }
