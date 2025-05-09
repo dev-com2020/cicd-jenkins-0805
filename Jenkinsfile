@@ -19,8 +19,10 @@ pipeline {
         stage('Test') {
             steps {
             echo 'Running Tests'
+            script {
             env.testResults = sh(returnStatus: true, script: 'mvn test')
         }
+            }
         }
         stage('Deploy') {
             steps {
