@@ -12,10 +12,10 @@ pipeline {
         }
         def testResults
         stage('Test') {
-            echo "Running Tests"
+            echo 'Running Tests'
             testResults = sh(returnStatus: true, script: 'mvn test')
         }
-        stage("Deploy") {
+        stage('Deploy') {
             echo 'Deploying app...'
             if (testResults == 0) {
                 echo 'Test passed'
