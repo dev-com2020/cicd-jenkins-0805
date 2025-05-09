@@ -23,6 +23,14 @@ pipeline {
             env.testResults = sh(returnStatus: true, script: 'pytest')
         }
             }
+            steps {
+            echo 'Running Pytest'
+            sh '''
+                    pytest
+                '''
+            
+        }
+            }
         }
         stage('Deploy') {
             steps {
