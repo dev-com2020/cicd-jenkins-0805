@@ -4,6 +4,7 @@ pipeline {
     environment {
         AWS_REGION = 'eu-central-1'
         IMAGE_NAME = 'cicd-jenkins-demo'
+        AWS_ACCOUNT_ID = 'aws-credentials'
     }
 
     stages {
@@ -15,20 +16,21 @@ pipeline {
             }
         }
 
-        stage('Push to ECR') {
-            environment {
-                AWS_ACCOUNT_ID = credentials('aws-credentials') // lub wpisz ręcznie
-            }
-            steps {
-                script {
-                    sh """
-                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-                    docker tag ${IMAGE_NAME}:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest
-                    docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest
-                    """
-                }
-            }
+       stage('Push to ECR') {
+    steps {
+        withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'aws-credentials'
+        ]]) {
+            sh """
+            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+            docker tag ${IMAGE_NAME}:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest
+            docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest
+            """
         }
+    }
+}
+
 
         stage('Deploy to ECS') {
             steps {
