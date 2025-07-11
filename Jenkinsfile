@@ -16,20 +16,30 @@ pipeline {
             }
         }
 
-       stage('Push to ECR') {
+   stage('Push to ECR') {
     steps {
         withCredentials([[
             $class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'aws-credentials'
         ]]) {
-            sh """
-            aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-            docker tag ${IMAGE_NAME}:latest ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest
-            docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest
-            """
+            script {
+                def accountId = sh(
+                  script: "aws sts get-caller-identity --query Account --output text",
+                  returnStdout: true
+                ).trim()
+
+                sh """
+                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${accountId}.dkr.ecr.${AWS_REGION}.amazonaws.com
+
+                docker tag ${IMAGE_NAME}:latest ${accountId}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest
+
+                docker push ${accountId}.dkr.ecr.${AWS_REGION}.amazonaws.com/${IMAGE_NAME}:latest
+                """
+            }
         }
     }
 }
+
 
 
         stage('Deploy to ECS') {
