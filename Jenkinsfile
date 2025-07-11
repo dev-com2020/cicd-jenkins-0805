@@ -42,10 +42,21 @@ pipeline {
 
 
 
-        stage('Deploy to ECS') {
-            steps {
-                sh 'aws ecs update-service --cluster CICD-Cluster --service my-service --force-new-deployment --region eu-central-1'
-            }
+       stage('Deploy to ECS') {
+    steps {
+        withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'aws-credentials'
+        ]]) {
+            sh '''
+                aws ecs update-service \
+                  --cluster CICD-Cluster \
+                  --service my-service \
+                  --force-new-deployment \
+                  --region eu-central-1
+            '''
         }
     }
+}
+
 }
