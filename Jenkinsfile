@@ -7,12 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git credentialsId: 'github-token', url: 'https://github.com/dev-com2020/cicd-jenkins-0805.git'
-            }
-        }
-
         stage('Build Docker image') {
             steps {
                 script {
