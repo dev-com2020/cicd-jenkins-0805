@@ -2,4 +2,6 @@ style {}
 
 .nav {}
 
-.block {}
+.block {
+    max-width: inherit;
+}
