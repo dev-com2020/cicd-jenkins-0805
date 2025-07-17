@@ -2,7 +2,9 @@ style {
     nav-down: auto;
 }
 
-.nav {}
+.nav {
+    display: flex;
+}
 
 .block {
     max-width: inherit;
