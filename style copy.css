@@ -1,0 +1,11 @@
+style {
+    nav-down: auto;
+}
+
+.nav {
+    display: flex;
+}
+
+.block {
+    max-width: inherit;
+}
