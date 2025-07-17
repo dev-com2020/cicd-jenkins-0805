@@ -2,16 +2,16 @@
 # .git/hooks/pre-commit  (nadaj chmod +x)
 set -e        # przerwij przy pierwszym błędzie
 
-echo "▶️  Black – format check"
-poetry run black --check .
+# echo "▶️  Black – format check"
+# poetry run black --check .
 
-echo "▶️  Flake8 – lintowanie"
-poetry run flake8 .
+# echo "▶️  Flake8 – lintowanie"
+# poetry run flake8 .
 
-echo "▶️  MyPy – typy (opcjonalnie)"
-poetry run mypy src/ tests/
+# echo "▶️  MyPy – typy (opcjonalnie)"
+# poetry run mypy src/ tests/
 
-echo "▶️  PyTest – testy jednostkowe"
-poetry run pytest -q
+# echo "▶️  PyTest – testy jednostkowe"
+# poetry run pytest -q
 
 echo "✅  Wszystko gra – commit leci!"

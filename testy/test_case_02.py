@@ -1,18 +1,21 @@
 from fastapi.testclient import TestClient
-from app.main import app
-from app.database import Base, engine, SessionLocal
+from main import app
+from testy.app.database import Base, engine, SessionLocal
 from sqlalchemy.orm import Session
 import pytest
 
+# Ensure tables are created before the TestClient is initialized
+Base.metadata.create_all(bind=engine)
+
 client = TestClient(app)
+
 
 @pytest.fixture(scope="module", autouse=True)
 def setup_db():
-    # Tworzy tabele przed testami
-    Base.metadata.create_all(bind=engine)
     yield
     # Czyści po testach
     Base.metadata.drop_all(bind=engine)
+
 
 def test_create_user():
     response = client.post("/users", params={"name": "Tomek"})
