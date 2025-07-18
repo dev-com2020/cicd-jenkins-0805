@@ -2,11 +2,20 @@ pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'eu-west-1'
+        // AWS_REGION = 'eu-west-1'
         IMAGE_NAME = 'cicd-jenkins-demo'
     }
 
     stages {
+        stage('Run Tests') {
+            steps {
+                sh 'python -m pip install -r requirements.txt'
+                sh 'mkdir -p reports'
+                sh 'PYTHONPATH=testy pytest testy --junitxml=reports/pytest.xml'
+                junit 'reports/pytest.xml'
+            }
+        }
+
         stage('Build Docker image') {
             steps {
                 script {
@@ -15,6 +24,7 @@ pipeline {
             }
         }
 
+        /*
         stage('Push to ECR') {
             steps {
                 withCredentials([[
@@ -38,7 +48,9 @@ pipeline {
                 }
             }
         }
+        */
 
+        /*
         stage('Deploy to ECS') {
             steps {
                 withCredentials([[
@@ -55,5 +67,6 @@ pipeline {
                 }
             }
         }
+        */
     }
 }
