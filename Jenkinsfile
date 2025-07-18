@@ -13,7 +13,7 @@ pipeline {
             steps {
                 sh '''
                     pip3 --version
-                    pip3 install --user virtualenv
+                    pip3 install --break-system-packages --user virtualenv
                     virtualenv venv
                     . venv/bin/activate
                     '''
@@ -22,7 +22,7 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh 'pip3 install -r requirements.txt'
+                sh 'pip3 install --break-system-packages -r requirements.txt'
                 sh 'mkdir -p reports'
                 sh 'PYTHONPATH=testy pytest testy --junitxml=reports/pytest.xml'
                 junit 'reports/pytest.xml'
