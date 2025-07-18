@@ -13,9 +13,6 @@ pipeline {
             steps {
                 sh '''
                     pip3 --version
-                    pip3 install --break-system-packages --user virtualenv
-                    virtualenv venv
-                    . venv/bin/activate
                     '''
                 
             }
