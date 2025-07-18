@@ -42,14 +42,6 @@ def read_user(user_id: int, db: Session = Depends(get_mock_db)):
 client = TestClient(app)
 
 
-@pytest.fixture(scope="module", autouse=True)
-def setup_db():
-    # Mock - nie potrzebujemy prawdziwej bazy
-    yield
-    # Czyści po testach - Mock nie wymaga czyszczenia
-    pass
-
-
 def test_create_user():
     response = client.post("/users", params={"name": "Tomek"})
     assert response.status_code == 200
