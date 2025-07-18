@@ -9,6 +9,11 @@ pipeline {
     }
 
     stages {
+        stage('Pip3 test') {
+            steps {
+                sh 'pip3 --version'
+            }
+        }
         stage('Run Tests') {
             steps {
                 sh 'python3 -m pip install -r requirements.txt'
