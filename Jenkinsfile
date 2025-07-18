@@ -9,9 +9,15 @@ pipeline {
     }
 
     stages {
-        stage('Pip3 test') {
+        stage('Pip3 test + create env') {
             steps {
-                sh 'pip3 --version'
+                sh '''
+                    pip3 --version
+                    python3 -m pip install --user virtualenv
+                    python3 -m virtualenv venv
+                    . venv/bin/activate
+                    '''
+                
             }
         }
         stage('Run Tests') {
