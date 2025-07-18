@@ -11,7 +11,6 @@ pipeline {
     stages {
         stage('Pip3 test') {
             steps {
-                sh 'sudo apt install python3-pip -y'
                 sh 'pip3 --version'
             }
         }
