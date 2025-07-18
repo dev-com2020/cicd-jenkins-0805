@@ -25,5 +25,5 @@ def setup_test_environment():
 
 # Generowanie raportów
 """
-pytest --cov=src --cov-report=html --cov-report=xml --junitxml=test-results.xml
+pytest --cov=app --cov-report=html --cov-report=xml --junitxml=test-results.xml
 """
