@@ -14,3 +14,8 @@ def test_divide():
 def test_divide_by_zero():
     with pytest.raises(ZeroDivisionError):
         divide(10, 0)
+
+
+@pytest.mark.slow
+def test_heavy_calculation():
+    assert add(10, 20) == 30
